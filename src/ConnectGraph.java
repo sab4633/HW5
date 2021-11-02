@@ -23,10 +23,28 @@ public class ConnectGraph {
         ConnectGraph program = new ConnectGraph();
         boolean[] visited = new boolean[n+1];
         int roads = -1;
+        int[] DFS = new int[n+m+1];
+        int top = -1;
         for(int i =1; i<=n; i++){
             if(visited[i] ==false){
                 roads++;
-                program.DFS(adjacencyList, visited, i);
+                top++;
+                DFS[top] = i;
+                while(top!=-1){
+                    visited[DFS[top]] = true;
+                    LinkedList temp = adjacencyList[DFS[top]];
+                    while(temp != null && visited[temp.val]){
+                        temp = temp.next;
+                    }
+                    if(temp!= null){
+                        top++;
+                        DFS[top] = temp.val;
+                    }else{
+                        top--;
+                    }
+
+                }
+
             }
 
         }
@@ -36,16 +54,7 @@ public class ConnectGraph {
         if(visited[value]){
             return;
         }
-        visited[value] = true;
-        LinkedList temp = adjacencyList[value];
-        while(temp != null){
 
-            if(!visited[temp.val]){
-                DFS(adjacencyList, visited, temp.val);
-            }
-
-            temp = temp.next;
-        }
     }
 
 }
