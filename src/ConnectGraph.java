@@ -6,7 +6,7 @@ public class ConnectGraph {
         int n = sc.nextInt(); //number of matrices
         LinkedList[] adjacencyList = new LinkedList[n + 1];
         int m = sc.nextInt();
-        if (m > n * 2) {
+        if (m > n * 10) {
             System.out.println(0);
         } else {
             for (int i = 0; i < m; i++) { //iterate through input placing each matrix into the array;
