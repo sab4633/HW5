@@ -26,33 +26,53 @@ public class ConnectGraph {
         int[] DFS = new int[n+m+1];
         int top = -1;
         for(int i =1; i<=n; i++){
-            if(visited[i] ==false){
+            visited[i] = false;
+        }
+        int count = 0;
+        for(int i =1; i<=n; i++){
+            if(visited[i] == false){
                 roads++;
-                top++;
-                DFS[top] = i;
-                while(top!=-1){
-                    visited[DFS[top]] = true;
-                    LinkedList temp = adjacencyList[DFS[top]];
-                    while(temp != null && visited[temp.val]){
-                        temp = temp.next;
-                    }
-                    if(temp!= null){
-                        top++;
-                        DFS[top] = temp.val;
-                    }else{
-                        top--;
-                    }
-
+                program.DFS(adjacencyList, visited, i, count);
+                if(count==n){
+                    break;
                 }
-
             }
 
         }
+//        for(int i =1; i<=n; i++){
+//            if(visited[i] ==false){
+//                roads++;
+//                top++;
+//                DFS[top] = i;
+//                while(top!=-1){
+//                    visited[DFS[top]] = true;
+//                    LinkedList temp = adjacencyList[DFS[top]];
+//                    while(temp != null && visited[temp.val]){
+//                        temp = temp.next;
+//                    }
+//                    if(temp!= null){
+//                        top++;
+//                        DFS[top] = temp.val;
+//                    }else{
+//                        top--;
+//                    }
+//
+//                }
+//
+//            }
+//
+//        }
         System.out.println(roads);
     }
-    public void DFS(LinkedList[] adjacencyList, boolean[] visited, int value){
-        if(visited[value]){
-            return;
+    public void DFS(LinkedList[] adjacencyList, boolean[] visited, int value, int count){
+        visited[value] = true;
+        LinkedList temp = adjacencyList[value];
+        while(temp != null){
+            if(visited[temp.val] == false){
+                DFS(adjacencyList, visited, temp.val, count+1);
+            }
+            temp = temp.next;
+
         }
 
     }
