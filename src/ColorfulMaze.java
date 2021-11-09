@@ -62,19 +62,19 @@ public class ColorfulMaze {
 //
 //            top--;
 //        }
-        boolean[][] seenedges = new boolean[n+m+2][n+m+2];
+        boolean[][] seenedges = new boolean[n+1][n+1];
 
         int beg = 1;
         int end = 2;
-        int[] queue = new int[3*(m+1)];
+        int[] queue = new int[2*(m+1)];
         queue[1] = s;
         seen[s] = true;
         int[][] distedges = new int[n+1][n+1];
         dist[s]=0;
-        int[] queueColor = new int[3*(m+1)];
+        int[] queueColor = new int[2*(m+1)];
         queueColor[1] = 3;
         int mindist = Integer.MAX_VALUE;
-        int[] queuedist = new int[3*(m+1)];
+        int[] queuedist = new int[2*(m+1)];
         while(beg<end){
             int head = queue[beg];
             int headcolor = queueColor[beg];
