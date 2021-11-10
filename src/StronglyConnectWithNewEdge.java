@@ -73,7 +73,7 @@ public class StronglyConnectWithNewEdge {
         boolean[] visfirst = new boolean[n+1];
         program.outputDFS(adjacencyList, vis, last);
 
-        program.outputDFS(adjacencyList, visfirst, stack[1]);
+        program.outputDFS(gt, visfirst, stack[1]);
         int min = Integer.MAX_VALUE;
         int minfirst = Integer.MAX_VALUE;
         for(int i =1; i<=n; i++){
