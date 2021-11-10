@@ -92,11 +92,12 @@ public class StronglyConnectWithNewEdge {
         temp.add(0);
         for(int i = 1; i<=n; i++){
             if(seen[stack[i]] == false){
-                program.outputDFS(gt, seen, stack[i]);
+                program.outputDFS(adjacencyList, seen, stack[i]);
                 comp++;
             }
 
         }
+
 
 
         if(comp ==1){
