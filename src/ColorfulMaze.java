@@ -1,24 +1,28 @@
-import javax.swing.*;
-import java.awt.*;
+//Author: Sofia Bzhilyanskaya (sab4633@rit.edu)
+/**
+ * Hw5-3: Given a maze with three different colors, find the shortest path from vertex s to vertex t going in the
+ * order of red, yellow, blue. It also must end on a blue.
+ */
 import java.util.Scanner;
 
 public class ColorfulMaze {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        int s = sc.nextInt();
-        int t = sc.nextInt();
+        int n = sc.nextInt(); //number of vertices
+        int m = sc.nextInt(); //number of edges
+        int s = sc.nextInt(); //starting vertex
+        int t = sc.nextInt(); //ending vertex
         LinkedListColor[] adjacencyList = new LinkedListColor[n + 1];
         for(int i = 1; i<=m; i++){
-            int v1 = sc.nextInt();
-            int v2 = sc.nextInt();
-            int col = sc.nextInt();
-            if (adjacencyList[v1] == null) {
+            int v1 = sc.nextInt(); //first vertex
+            int v2 = sc.nextInt(); //second vertex
+            int col = sc.nextInt(); //associated color
+            if (adjacencyList[v1] == null) { //if non-existent create list
                 adjacencyList[v1] = new LinkedListColor(v2, col);
             }else{
-                adjacencyList[v1].add(v2, col);
+                adjacencyList[v1].add(v2, col);//otherwise add it
             }
+            //repeat in other direction
             if(adjacencyList[v2] == null){
                 adjacencyList[v2] = new LinkedListColor(v1, col);
             }else{
@@ -26,71 +30,32 @@ public class ColorfulMaze {
             }
 
         }
-        boolean[] seen = new boolean[n+1];
 
-        int[] dist = new int[n+1];
-        for(int i =1; i<=n; i++){
-            seen[i] = false;
-            dist[i] = Integer.MAX_VALUE;
-        }
-     //   dist[s] = 0;
-       // ColorfulMaze program = new ColorfulMaze();
-        //program.longDFS(adjacencyList,seen, s, dist, 0,t);
-     //   System.out.println(dist[t]);
-//
-//        int[] stack = new int[n+1];
-//        int[] stackColor = new int[n+1];
-//        int top = 0;
-//        stack[top] = s;
-//        stackColor[top] = 1;
-//        while(top>=0){
-//            seen[stack[top]] = true;
-//            LinkedListColor temp = adjacencyList[stack[top]];
-//            while(temp != null){
-//                if(seen[temp.val] == false && temp.color == (stackColor[top]%3)+1){
-//                    seen[temp.val] = true;
-//                    top++;
-//                    stack[top] = temp.val;
-//                    stackColor[top] = temp.color;
-//                    if(dist[temp.val] > dist[stack[top-1]]+1){
-//                        dist[temp.val] = dist[stack[top-1]]+1;
-//                    }
-//                }
-//                temp = temp.next;
-//
-//            }
-//
-//            top--;
-//        }
-        boolean[][] seenedges = new boolean[n+1][n+1];
-
-        int beg = 1;
-        int end = 2;
-        int[] queue = new int[2*(m+1)];
-        queue[1] = s;
-        seen[s] = true;
-        int[][] distedges = new int[n+1][n+1];
-        dist[s]=0;
-        int[] queueColor = new int[2*(m+1)];
-        queueColor[1] = 3;
-        int mindist = Integer.MAX_VALUE;
-        int[] queuedist = new int[2*(m+1)];
-        while(beg<end){
-            int head = queue[beg];
+        boolean[][] seenedges = new boolean[n+1][n+1]; //edges that have been seen
+        int beg = 1; //beginning of queue
+        int end = 2; //end of queue
+        int[] queue = new int[2*(m+1)]; //keeps track of BFS elements
+        queue[1] = s; //starter
+        int[][] distedges = new int[n+1][n+1]; //distance from start of edge
+        int[] queueColor = new int[2*(m+1)]; //color associated qith item in queue
+        queueColor[1] = 3; //start with blue bc first is red
+        int mindist = Integer.MAX_VALUE; //smallest distance at the end
+        int[] queuedist = new int[2*(m+1)]; //distance associated with item in queue
+        while(beg<end){ //while queue is not empty
+            int head = queue[beg]; //
             int headcolor = queueColor[beg];
             int prevdist = queuedist[beg];
             LinkedListColor temp = adjacencyList[head];
-            while(temp!= null){
-                if((seenedges[head][temp.val] == false)&& temp.color == (headcolor%3)+1){
-
-                    queue[end] = temp.val;
-                    queueColor[end] = temp.color;
-                    queuedist[end] = prevdist+1;
+            while(temp!= null){ //iterate to end
+                if((seenedges[head][temp.val] == false)&& temp.color == (headcolor%3)+1){ //if not seen and color is correct
+                    queue[end] = temp.val; //add to queue
+                    queueColor[end] = temp.color; //add color to queue
+                    queuedist[end] = prevdist+1; //increment distance
                     distedges[head][temp.val] = prevdist+1;
                     seenedges[head][temp.val] = true;
-                    end++;
-                    if(temp.val == t && mindist> distedges[head][temp.val] && temp.color == 3){
-                        mindist = distedges[head][temp.val];
+                    end++; //increase queue
+                    if(temp.val == t && mindist> distedges[head][temp.val] && temp.color == 3){ //if its at the end and its shorter
+                        mindist = distedges[head][temp.val]; //track smallest value
                     }
                 }
                 temp = temp.next;
@@ -104,41 +69,7 @@ public class ColorfulMaze {
             System.out.println(mindist);
         }
 
-
-
-
-
     }
-//    public void longDFS(LinkedListColor[] adjacencyList, boolean[] seen, int value, int[] dist, int prevcolor, int t){
-//        seen[value] = true;
-//        LinkedListColor temp = adjacencyList[value];
-//        while(temp != null){
-//            if(seen[temp.val] == false && temp.color == (prevcolor%3)+1){
-//                seen[temp.val] = true;
-//                if(temp.val == t ){
-//                    if(temp.color == 3){
-//                        dist[t] = dist[value]+1;
-//                    }
-//                }else{
-//                    if(dist[temp.val] > dist[value]+1){
-//                        dist[temp.val] = dist[value]+1;
-//                    }
-//                    longDFS(adjacencyList, seen, temp.val, dist, temp.color, t);
-//                }
-//
-//
-//
-//            }
-//
-//            temp = temp.next;
-//
-//
-//
-//
-//        }
-//        seen[value]= false;
-//
-//
-//    }
+
 
 }
